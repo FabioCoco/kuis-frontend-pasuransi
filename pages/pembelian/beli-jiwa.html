@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beli Asuransi Jiwa - Pasuransi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="../home.html" class="logo">Pasuransi</a>
+                <div class="nav-links" id="navLinks"></div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="purchase-header life">
+            <div class="container">
+                <h1>Formulir Asuransi Jiwa</h1>
+                <p>Pilih Uang Pertanggungan untuk keluarga terkasih Anda.</p>
+            </div>
+        </section>
+
+        <section class="purchase-form-section">
+            <div class="container form-grid">
+                <div class="purchase-form">
+                    <h2>Data Diri & Pilihan Pertanggungan</h2>
+                    <form id="purchaseForm" novalidate>
+                        <div class="input-group full-width">
+                            <label for="namaLengkap">Nama Lengkap (sesuai KTP)</label>
+                            <input type="text" id="namaLengkap" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="tanggalLahir">Tanggal Lahir</label>
+                                <input type="date" id="tanggalLahir" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="pertanggungan">Besaran Uang Pertanggungan</label>
+                                <select id="pertanggungan" required>
+                                    <option value="">Pilih...</option>
+                                    <option value="1000000000">Rp 1.000.000.000</option>
+                                    <option value="2000000000">Rp 2.000.000.000</option>
+                                    <option value="3500000000">Rp 3.500.000.000</option>
+                                    <option value="5000000000">Rp 5.000.000.000</option>
+                                    <option value="10000000000">Rp 10.000.000.000</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div id="formMessage" class="message"></div>
+                        <button type="submit" class="btn btn-full">Hitung Premi</button>
+                    </form>
+                </div>
+
+                <aside class="premium-summary">
+                    <h3>Ringkasan Premi & Checkout</h3>
+                    <div class="price-display" id="premiumDisplay">
+                        Rp 0 <span>/ bulan</span>
+                    </div>
+
+                    <div id="checkoutSection" style="display: none;">
+                        <div class="payment-method">
+                            <h4>Pilih Metode Pembayaran</h4>
+                            <div class="payment-option">
+                                <input type="radio" id="bca" name="payment" value="BCA Virtual Account" checked>
+                                <label for="bca">BCA Virtual Account</label>
+                            </div>
+                             <div class="payment-option">
+                                <input type="radio" id="gopay" name="payment" value="GoPay">
+                                <label for="gopay">GoPay</label>
+                            </div>
+                        </div>
+                        <button id="payBtn" class="btn btn-full">Bayar Sekarang</button>
+                    </div>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Pasuransi. Semua hak dilindungi.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Setup Navbar
+            const navLinksContainer = document.getElementById('navLinks');
+            const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
+            if (!loggedInUser) {
+                window.location.href = '/pages/login.html';
+                return;
+            }
+            navLinksContainer.innerHTML = `<span>Halo, <strong>${loggedInUser.fullName.split(' ')[0]}</strong>!</span> <a href="/pages/home.html">Home</a> <a href="/pages/histori/histori.html">Histori</a> <button id="logoutBtn" class="btn-logout">Logout</button>`;
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                sessionStorage.removeItem('loggedInUser');
+                window.location.href = '/pages/login.html';
+            });
+
+            const form = document.getElementById('purchaseForm');
+            const premiumDisplay = document.getElementById('premiumDisplay');
+            const checkoutSection = document.getElementById('checkoutSection');
+            const payBtn = document.getElementById('payBtn');
+            const formMessage = document.getElementById('formMessage');
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                formMessage.textContent = '';
+                formMessage.className = 'message';
+                
+                const tanggalLahir = document.getElementById('tanggalLahir').value;
+                const pertanggungan = parseInt(document.getElementById('pertanggungan').value);
+
+                if (!tanggalLahir || isNaN(pertanggungan)) {
+                     showMessage('Semua kolom wajib diisi.', 'error');
+                    return;
+                }
+
+                // Hitung Umur
+                const birthDate = new Date(tanggalLahir);
+                const today = new Date();
+                const age = Math.floor((today - birthDate) / (365.25 * 24 * 60 * 60 * 1000));
+
+                // Hitung Premi
+                let m = 0;
+                if (age <= 30) m = 0.002; 
+                else if (age > 30 && age <= 50) m = 0.004; 
+                else m = 0.01; 
+
+                const premiBulanan = m * pertanggungan;
+
+                premiumDisplay.innerHTML = `Rp ${premiBulanan.toLocaleString('id-ID')} <span>/ bulan</span>`;
+                checkoutSection.style.display = 'block';
+
+                sessionStorage.setItem('currentPurchase', JSON.stringify({
+                    product: 'Asuransi Jiwa Sejahtera',
+                    type: 'Jiwa',
+                    premium: premiBulanan
+                }));
+            });
+
+             payBtn.addEventListener('click', function() {
+                const currentPurchase = JSON.parse(sessionStorage.getItem('currentPurchase'));
+                const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+
+                const purchaseRecord = {
+                    ...currentPurchase,
+                    paymentMethod: paymentMethod,
+                    date: new Date().toISOString(),
+                    status: 'Lunas'
+                };
+
+                const history = JSON.parse(localStorage.getItem('purchaseHistory')) || [];
+                history.push(purchaseRecord);
+                localStorage.setItem('purchaseHistory', JSON.stringify(history));
+
+                alert('Pembayaran berhasil!');
+                window.location.href = '/pages/histori/histori.html';
+            });
+
+             function showMessage(msg, type) {
+                formMessage.textContent = msg;
+                formMessage.classList.add(type);
+            }
+        });
+    </script>
+</body>
+</html>

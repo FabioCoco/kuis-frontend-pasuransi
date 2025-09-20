@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Asuransi Kesehatan - Pasuransi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../css/style.css"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="../home.html" class="logo">Pasuransi</a>
+                <div class="nav-links" id="navLinks">
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="product-detail-header health">
+            <div class="container">
+                <i class="fas fa-heart-pulse"></i>
+                <h1>Asuransi Kesehatan Keluarga Ceria</h1>
+                <p>Perlindungan kesehatan lengkap untuk Anda dan keluarga tercinta.</p>
+            </div>
+        </section>
+
+        <section class="product-detail-content">
+            <div class="container detail-grid">
+                <div class="main-content">
+                    <h2>Manfaat Utama</h2>
+                    <ul class="benefits-list">
+                        <li><i class="fas fa-check-circle"></i> Rawat inap & pembedahan tanpa batas</li>
+                        <li><i class="fas fa-check-circle"></i> Perlindungan hingga ke seluruh dunia</li>
+                        <li><i class="fas fa-check-circle"></i> Klaim cashless di lebih dari 2000 rumah sakit</li>
+                        <li><i class="fas fa-check-circle"></i> Termasuk biaya rawat jalan dan perawatan gigi</li>
+                        <li><i class="fas fa-check-circle"></i> Santunan tunai harian</li>
+                    </ul>
+
+                    <h2>Deskripsi Produk</h2>
+                    <p>Produk Asuransi Kesehatan Keluarga Ceria memberikan ketenangan pikiran dengan perlindungan kesehatan komprehensif. Kami menanggung semua biaya medis mulai dari konsultasi dokter, rawat inap, hingga tindakan bedah kompleks. Dengan jaringan rumah sakit rekanan yang luas, Anda dapat dengan mudah mendapatkan perawatan terbaik tanpa perlu khawatir soal biaya.</p>
+                </div>
+
+                <aside class="action-card">
+                    <h3>Premi Mulai dari</h3>
+                    <div class="price">Rp 300.000 <span>/ bulan</span></div>
+                    <p>Premi dapat bervariasi tergantung usia, jenis kelamin, dan riwayat kesehatan.</p>
+                    <a href="../pembelian/beli-kesehatan.html" class="btn btn-full">Beli Sekarang</a>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Pasuransi. Semua hak dilindungi.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinksContainer = document.getElementById('navLinks');
+            const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
+
+            if (!loggedInUser) {
+                window.location.href = '/pages/login.html';
+            } else {
+                navLinksContainer.innerHTML = `
+                    <span>Halo, <strong>${loggedInUser.fullName.split(' ')[0]}</strong>!</span>
+                    <button id="logoutBtn" class="btn-logout">Logout</button>
+                `;
+                const logoutBtn = document.getElementById('logoutBtn');
+                logoutBtn.addEventListener('click', function() {
+                    sessionStorage.removeItem('loggedInUser');
+                    window.location.href = '/pages/login.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

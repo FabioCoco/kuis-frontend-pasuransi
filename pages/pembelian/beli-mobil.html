@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beli Asuransi Mobil - Pasuransi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="../home.html" class="logo">Pasuransi</a>
+                <div class="nav-links" id="navLinks"></div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="purchase-header car">
+            <div class="container">
+                <h1>Checkout Asuransi Mobil</h1>
+                <p>Lengkapi data, hitung premi, dan selesaikan pembayaran Anda.</p>
+            </div>
+        </section>
+
+        <section class="purchase-form-section">
+            <div class="container form-grid">
+                <div class="purchase-form">
+                    <form id="purchaseForm" novalidate>
+                        <h2>Detail Kendaraan & Pemilik</h2>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="merk">Merk Mobil</label>
+                                <input type="text" id="merk" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="jenis">Jenis Mobil</label>
+                                <input type="text" id="jenis" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="tahun">Tahun Pembuatan</label>
+                                <input type="number" id="tahun" placeholder="Contoh: 2022" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="harga">Harga Mobil (Rp)</label>
+                                <input type="number" id="harga" placeholder="Contoh: 250000000" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-group">
+                                <label for="plat">Nomor Plat</label>
+                                <input type="text" id="plat" required>
+                            </div>
+                             <div class="input-group">
+                                <label for="pemilik">Nama Pemilik</label>
+                                <input type="text" id="pemilik" required>
+                            </div>
+                        </div>
+                         <div class="form-row">
+                            <div class="input-group">
+                                <label for="mesin">Nomor Mesin</label>
+                                <input type="text" id="mesin" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="rangka">Nomor Rangka</label>
+                                <input type="text" id="rangka" required>
+                            </div>
+                        </div>
+
+                        <h2>Unggah Foto Kendaraan</h2>
+                        <div class="upload-grid">
+                            <div class="input-group">
+                                <label for="fotoDepan">Tampak Depan</label>
+                                <input type="file" id="fotoDepan" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="fotoBelakang">Tampak Belakang</label>
+                                <input type="file" id="fotoBelakang" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="fotoKiri">Tampak Kiri</label>
+                                <input type="file" id="fotoKiri" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="fotoKanan">Tampak Kanan</label>
+                                <input type="file" id="fotoKanan" required>
+                            </div>
+                             <div class="input-group">
+                                <label for="fotoDashboard">Dashboard</label>
+                                <input type="file" id="fotoDashboard" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="fotoMesin">Mesin</label>
+                                <input type="file" id="fotoMesin" required>
+                            </div>
+                        </div>
+                        
+                        <button type="button" id="calculateBtn" class="btn btn-full">Hitung Premi</button>
+                    </form>
+                </div>
+
+                <aside class="premium-summary">
+                    <h3>Ringkasan & Pembayaran</h3>
+                    <div class="price-display" id="premiumDisplay">
+                        <p>Premi Anda akan ditampilkan di sini setelah Anda melengkapi formulir dan menekan tombol hitung.</p>
+                    </div>
+
+                    <div id="paymentSection" class="payment-method" style="display: none;">
+                        <h4>Pilih Metode Pembayaran</h4>
+                        <div class="payment-option">
+                            <input type="radio" id="bca" name="payment" value="BCA Virtual Account" required>
+                            <label for="bca">BCA Virtual Account</label>
+                        </div>
+                        <div class="payment-option">
+                            <input type="radio" id="gopay" name="payment" value="GoPay" required>
+                            <label for="gopay">GoPay</label>
+                        </div>
+                         <div class="payment-option">
+                            <input type="radio" id="cc" name="payment" value="Kartu Kredit" required>
+                            <label for="cc">Kartu Kredit</label>
+                        </div>
+                    </div>
+                    
+                    <div id="formMessage" class="message"></div>
+                    <button type="button" id="payBtn" class="btn btn-full disabled">Bayar Sekarang</button>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Pasuransi. Semua hak dilindungi.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinksContainer = document.getElementById('navLinks');
+            const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
+
+            if (!loggedInUser) {
+                window.location.href = '/pages/login.html';
+                return;
+            }
+            
+            navLinksContainer.innerHTML = `
+                <span>Halo, <strong>${loggedInUser.fullName.split(' ')[0]}</strong>!</span>
+                <a href="/pages/histori/histori.html">Histori</a>
+                <button id="logoutBtn" class="btn-logout">Logout</button>
+            `;
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                sessionStorage.removeItem('loggedInUser');
+                window.location.href = '/pages/login.html';
+            });
+
+            const form = document.getElementById('purchaseForm');
+            const calculateBtn = document.getElementById('calculateBtn');
+            const payBtn = document.getElementById('payBtn');
+            const premiumDisplay = document.getElementById('premiumDisplay');
+            const paymentSection = document.getElementById('paymentSection');
+            const formMessage = document.getElementById('formMessage');
+
+            // Event listener untuk tombol Hitung Premi
+            calculateBtn.addEventListener('click', function() {
+                formMessage.textContent = '';
+                formMessage.className = 'message';
+
+                const inputs = form.querySelectorAll('input[required]');
+                let allFilled = true;
+                inputs.forEach(input => {
+                    if (!input.value) {
+                        allFilled = false;
+                    }
+                });
+
+                if (!allFilled) {
+                    showMessage('Semua kolom data kendaraan dan foto wajib diisi.', 'error');
+                    return;
+                }
+
+                const tahun = parseInt(document.getElementById('tahun').value);
+                const harga = parseInt(document.getElementById('harga').value);
+
+                if (isNaN(tahun) || isNaN(harga) || tahun <= 0 || harga <= 0) {
+                    showMessage('Tahun dan Harga harus berupa angka positif.', 'error');
+                    return;
+                }
+
+                const currentYear = new Date().getFullYear();
+                const umurMobil = currentYear - tahun;
+                let tarif = 0;
+
+                if (umurMobil >= 0 && umurMobil <= 3) {
+                    tarif = 0.025;
+                } else if (umurMobil > 3 && umurMobil <= 5) {
+                    tarif = (harga < 200000000) ? 0.04 : 0.03;
+                } else if (umurMobil > 5) {
+                    tarif = 0.05;
+                } else {
+                     showMessage('Tahun pembuatan mobil tidak valid.', 'error');
+                     return;
+                }
+
+                const premiTahunan = harga * tarif;
+
+                // Tampilkan hasil dan tombol bayar
+                premiumDisplay.innerHTML = `Rp ${premiTahunan.toLocaleString('id-ID')} <span>/ tahun</span>`;
+                paymentSection.style.display = 'block';
+                payBtn.classList.remove('disabled');
+
+                // Simpan data sementara untuk pembayaran
+                const purchaseData = {
+                    product: 'Asuransi Mobil Proteksi Prima',
+                    type: 'Mobil',
+                    premium: premiTahunan,
+                    date: new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })
+                };
+                sessionStorage.setItem('currentPurchase', JSON.stringify(purchaseData));
+            });
+
+            // Event listener untuk tombol Bayar Sekarang
+            payBtn.addEventListener('click', function() {
+                const selectedPayment = document.querySelector('input[name="payment"]:checked');
+                if (!selectedPayment) {
+                    showMessage('Silakan pilih metode pembayaran.', 'error');
+                    return;
+                }
+                
+                // Ambil data dari sessionStorage
+                const purchaseData = JSON.parse(sessionStorage.getItem('currentPurchase'));
+                if (!purchaseData) {
+                    showMessage('Terjadi kesalahan. Silakan hitung ulang premi.', 'error');
+                    return;
+                }
+                
+                // Tambahkan info pembayaran dan status
+                purchaseData.paymentMethod = selectedPayment.value;
+                purchaseData.status = 'Lunas';
+
+                // Ambil histori yang ada dari localStorage
+                const history = JSON.parse(localStorage.getItem('purchaseHistory')) || [];
+                
+                // Tambahkan transaksi baru ke histori
+                history.unshift(purchaseData); 
+                
+                // Simpan kembali ke localStorage
+                localStorage.setItem('purchaseHistory', JSON.stringify(history));
+
+                // Hapus data sementara
+                sessionStorage.removeItem('currentPurchase');
+
+                // Arahkan ke halaman histori
+                alert('Pembayaran Berhasil!');
+                window.location.href = '/pages/histori/histori.html';
+            });
+
+            function showMessage(msg, type) {
+                formMessage.textContent = msg;
+                formMessage.className = 'message';
+                formMessage.classList.add(type);
+            }
+        });
+    </script>
+</body>
+</html>
+

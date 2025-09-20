@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Asuransi Jiwa - Pasuransi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../css/style.css"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="../home.html" class="logo">Pasuransi</a>
+                <div class="nav-links" id="navLinks">     
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="product-detail-header life">
+            <div class="container">
+                <i class="fas fa-shield-heart"></i>
+                <h1>Asuransi Jiwa Warisan Abadi</h1>
+                <p>Pastikan masa depan keluarga terjamin saat Anda tiada.</p>
+            </div>
+        </section>
+
+        <section class="product-detail-content">
+            <div class="container detail-grid">
+    
+                <div class="main-content">
+                    <h2>Manfaat Utama</h2>
+                    <ul class="benefits-list">
+                        <li><i class="fas fa-check-circle"></i> Uang pertanggungan hingga Rp 5 Miliar</li>
+                        <li><i class="fas fa-check-circle"></i> Pilihan masa bayar premi yang fleksibel (5, 10, 15 tahun)</li>
+                        <li><i class="fas fa-check-circle"></i> Manfaat akhir kontrak: 110% premi dikembalikan</li>
+                        <li><i class="fas fa-check-circle"></i> Perlindungan dari risiko cacat total dan tetap</li>
+                        <li><i class="fas fa-check-circle"></i> Proses klaim meninggal dunia yang cepat dan mudah</li>
+                    </ul>
+
+                    <h2>Deskripsi Produk</h2>
+                    <p>Asuransi Jiwa Warisan Abadi adalah bentuk cinta nyata bagi keluarga Anda. Produk ini memberikan jaminan finansial yang kuat bagi ahli waris jika risiko kehidupan terjadi pada Anda. Dengan premi yang terjangkau dan uang pertanggungan yang besar, Anda dapat memastikan semua impian keluarga, seperti pendidikan anak dan dana pensiun, tetap terwujud.</p>
+                </div>
+
+    
+                <aside class="action-card">
+                    <h3>Premi Mulai dari</h3>
+                    <div class="price">Rp 500.000 <span>/ bulan</span></div>
+                    <p>Premi dapat bervariasi tergantung usia, jenis kelamin, dan uang pertanggungan.</p>
+                    <a href="../pembelian/beli-jiwa.html" class="btn btn-full">Beli Sekarang</a>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Pasuransi. Semua hak dilindungi.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinksContainer = document.getElementById('navLinks');
+            const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
+
+            if (!loggedInUser) {
+                window.location.href = '/pages/login.html';
+            } else {
+                navLinksContainer.innerHTML = `
+                    <span>Halo, <strong>${loggedInUser.fullName.split(' ')[0]}</strong>!</span>
+                    <button id="logoutBtn" class="btn-logout">Logout</button>
+                `;
+                const logoutBtn = document.getElementById('logoutBtn');
+                logoutBtn.addEventListener('click', function() {
+                    sessionStorage.removeItem('loggedInUser');
+                    window.location.href = '/pages/login.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

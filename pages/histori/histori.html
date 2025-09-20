@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histori Pembelian - Pasuransi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="../home.html" class="logo">Pasuransi</a>
+                <div class="nav-links" id="navLinks"></div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="history-header">
+            <div class="container">
+                <h1><i class="fas fa-history"></i> Histori Pembelian Anda</h1>
+                <p>Semua transaksi Anda yang telah selesai akan tercatat di sini.</p>
+            </div>
+        </section>
+
+        <section class="history-content">
+            <div class="container">
+                <div id="historyContainer">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Pasuransi. Semua hak dilindungi.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinksContainer = document.getElementById('navLinks');
+            const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
+
+            if (!loggedInUser) {
+                window.location.href = '/pages/login.html';
+                return;
+            }
+
+            navLinksContainer.innerHTML = `
+                <span>Halo, <strong>${loggedInUser.fullName.split(' ')[0]}</strong>!</span>
+                <a href="/pages/home.html">Home</a>
+                <a href="/pages/histori/histori.html">Histori</a>
+                <button id="logoutBtn" class="btn-logout">Logout</button>
+            `;
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                sessionStorage.removeItem('loggedInUser');
+                window.location.href = '/pages/login.html';
+            });
+
+            // Logika untuk menampilkan histori
+           const historyContainer = document.getElementById('historyContainer');
+            const historyData = JSON.parse(localStorage.getItem('purchaseHistory')) || [];
+
+            if (historyData.length === 0) {
+                historyContainer.innerHTML = `
+                    <div class="empty-history">
+                        <i class="fas fa-box-open"></i>
+                        <p>Anda belum memiliki riwayat pembelian.</p>
+                    </div>
+                `;
+            } else {
+                // Mengurutkan data dari yang terbaru
+                historyData.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                historyData.forEach(item => {
+                    const formattedDate = new Date(item.date).toLocaleDateString('id-ID', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                    });
+
+                    const card = document.createElement('div');
+                    card.className = 'history-card';
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <h3>${item.product}</h3>
+                            <span class="status lunas">${item.status}</span>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Jenis:</strong> ${item.type}</p>
+                            <p><strong>Tanggal Pembelian:</strong> ${formattedDate}</p>
+                            <p><strong>Metode Pembayaran:</strong> ${item.paymentMethod}</p>
+                        </div>
+                        <div class="card-footer">
+                            <span>Total Pembayaran</span>
+                            <strong>Rp ${item.premium.toLocaleString('id-ID')}</strong>
+                        </div>
+                    `;
+                    historyContainer.appendChild(card);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
