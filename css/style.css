@@ -412,7 +412,7 @@ main {
 }
 
 .product-detail-header.life { 
-     background: linear-gradient(45deg, #2e7d32, #43a047);
+     background: linear-gradient(45deg, #28a745, #20c997); 
 }
 
 .product-detail-header i {
@@ -428,7 +428,7 @@ main {
 
 .product-detail-header >p {
     font-size: 1.2rem;
-    color: #fff;
+    color: rgba(255, 255, 255, 0.8);
     opacity: 0.9;
     margin-top: 10px;
     margin-bottom: 0;
